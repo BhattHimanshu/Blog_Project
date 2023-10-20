@@ -56,6 +56,8 @@ public class ControllerOne {
         List<TagEntity> tagList = ts.findTagIds(tagFromHtml);
         postEntity.setTags(new HashSet<>(tagList));
         postEntity.setId(blogId);
+        postEntity.setCreatedAt(postEntity.getCreatedAt());
+        postEntity.setPublishedAt(postEntity.getPublishedAt());
         ps.addPost(postEntity);
         return "redirect:/";
     }

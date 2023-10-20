@@ -39,4 +39,14 @@ public class PostService {
         return postRepository.getBySearchString(searchString);
     }
 
+    public Page<PostEntity> getPostsSortedByField(Pageable pageable, String sort) {
+        if ("desc".equals(sort)) {
+            return postRepository.findAllByOrderByPublishedAtDesc(pageable);
+        } else if ("asc".equals(sort)) {
+            return postRepository.findAllByOrderByPublishedAtAsc(pageable);
+        } else {
+            throw new IllegalArgumentException("Invalid sort direction: " + sort);
+        }
+    }
 }
+
