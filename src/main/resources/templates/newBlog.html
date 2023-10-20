@@ -1,0 +1,97 @@
+    <!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Create Blog</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: white;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+
+            #create-blog {
+                text-align: center;
+                background-color: white;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+                width: 500px;
+            }
+
+            #create-blog h1 {
+                font-size: 36px;
+                color: #333;
+            }
+
+            #create-blog label {
+                font-size: 18px;
+                color: #333;
+                display: block;
+                text-align: left;
+                margin-top: 10px;
+            }
+
+            #create-blog input[type="text"],
+            #create-blog textarea {
+                width: 100%;
+                padding: 10px;
+                margin: 8px 0;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+                outline: none; /* Remove default input outline */
+            }
+
+            #create-blog textarea {
+                height: 200px;
+            }
+
+            #create-blog button {
+                background-color: #333;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            #create-blog button:hover {
+                background-color: #ddd;
+                color: #333;
+            }
+        </style>
+    </head>
+    <body>
+    <div id="create-blog">
+        <h1>Write Blog</h1>
+        <form th:action="@{/addBlog}" method="get">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required />
+
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" required />
+
+            <label for="excerpt">Excerpt:</label>
+            <input type="text" id="excerpt" name="excerpt" required />
+
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" required></textarea>
+
+            <div id="tags-container">
+              <label for="tags">Tag: </label>
+                <input type="text" id ="tags" name="tagsHtml" class="tag-input" placeholder="You can put multiple Tags sperated by commans"/>
+            </div>
+
+            <input type="submit" value="Publish" />
+
+        </form>
+    </div>
+    </body>
+    </html>

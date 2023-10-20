@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Blog Application</title>
+  <style>
+    body {
+      background-color: #ffffff;
+      color: #000000;
+      font-family: Arial, sans-serif;
+    }
+    .create-blog-button {
+      float: right;
+      margin-right: 10px;
+      padding: 10px 20px;
+      background-color: #fff; /* White background */
+      color: #000;
+      text-decoration: none;
+      border: 1px solid #000; /* Add border */
+      border-radius: 20px;
+      margin-top: 10px; /* Adjust the position */
+    }
+    .create-blog-button:hover {
+      background-color: #000;
+      color: #fff;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 32px;
+    }
+    .search-bar {
+      border: 1px solid #000;
+      border-radius: 20px;
+      padding: 10px;
+    }
+    .login-link {
+      margin-left: 10px;
+      text-decoration: none;
+      color: #000;
+    }
+    .dropdown {
+      display: inline-block;
+      margin-left: 10px;
+    }
+    .blog-box {
+      border: 1px solid #000;
+      padding: 10px;
+      margin-top: 20px;
+    }
+    .blog-box a {
+      text-decoration: none; /* Remove underline */
+      color: #000; /* Set text color to black */
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <a th:href="@{/newBlog}" class="create-blog-button">Create Blog</a>
+
+  <h1>MY BLOG APPLICATION</h1>
+  <div class="search-bar">
+    <form action="search" style="display: inline; margin-right: 10px;">
+      <input type="text" name="search"  placeholder="Search"> <span><input type="submit" value="search"></span>
+    </form>
+    <a href="#" class="login-link">Login</a>
+    <div class="dropdown">
+      <select>
+        <option value="">Filter by Author</option>
+        <!-- Add dynamically generated options from database authors here -->
+      </select>
+    </div>
+    <div class="dropdown">
+      <select>
+        <option value="">Sort by Author</option>
+        <!-- Add dynamically generated options from database authors here -->
+      </select>
+    </div>
+  </div>
+
+  <!-- Iterate through the list of blogs and display them in boxes -->
+  <div th:each="blog : ${blogs}" class="blog-box">
+    <a th:href="@{/blogLink/{blogId}(blogId=${blog.id})}">    <h2 th:text="${blog.title}">Blog Title</h2>
+    <p th:text="'Author : '+${blog.author}">Author</p>
+      <p>Tags: <span th:each="tag, iterStat : ${blog.tags}">
+    <span th:text="${tag.name}" class="tag">Tag</span>
+    <span th:unless="${iterStat.last}"> | </span>
+</span></p>
+    <p th:text="${blog.excerpt}">Excerpt</p>
+    <!-- You can add more content or a "Read More" link here -->
+    </a>
+  </div>
+</div>
+</body>
+</html>

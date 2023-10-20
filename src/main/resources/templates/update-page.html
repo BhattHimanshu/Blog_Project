@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Read Blog</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 32px;
+            text-align: center;
+            margin: 0;
+        }
+        .top-nav {
+            background-color: #ffffff;
+            color: #000;
+            text-align: left;
+            padding: 10px 0;
+        }
+        .top-nav a {
+            text-decoration: none;
+            color: #000;
+            padding: 10px 20px;
+        }
+        .login-link {
+            float: right;
+        }
+        .blog-title {
+            font-size: 24px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .blog-meta {
+            font-size: 12px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .blog-content {
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        .top-button-edit-link {
+            text-decoration: none;
+            color: #000;
+            padding: 10px 20px;
+        }
+        .top-button-delete-link {
+            text-decoration: none;
+            color: #000;
+            padding: 10px 20px; /* Adjust padding as needed */
+        }
+        .comment-section {
+            background-color: #ffffff; /* Set background to pure white */
+            padding: 20px;
+            margin: 20px 0; /* Adjust margin as needed */
+            border-radius: 10px; /* Add border-radius for a bit of curve */
+            padding-right: 60%;
+            padding-left:  23%;
+        }
+        .comment-section label {
+            text-decoration: none;
+            display: block;
+            margin-top: 10px;
+        }
+        .comment-section input[type="text"],
+        .comment-section textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px; /* Match font size with other content */
+            font-family: Arial, sans-serif; /* Match font type with other content */
+            border: 1px solid #ddd; /* Add border for input fields */
+            border-radius: 5px; /* Add border-radius for a bit of curve */
+        }
+        .comment-section form {
+            margin-top: 20px;
+        }
+        .comment {
+            margin-top: 20px;
+        }
+        .comment-box {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .comment-name {
+            font-size: 14px; /* Smaller font size for name */
+        }
+
+        .comment-email {
+            font-size: 14px; /* Smaller font size for email */
+            color: #555; /* Optionally, you can change the text color */
+        }
+
+        .comment-content {
+            font-size: 16px; /* Adjust the font size for the comment text */
+        }
+        .deleteComment{
+            text-decoration: underline;
+            color: #000;
+        }
+        .tags-section{
+            font-size: 12px;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="top-nav">
+        <a th:href="@{/}" class="top-button">My Blog Application</a>
+        <a th:href="@{/login}" class="top-button login-link">Login</a>
+    </div>
+    <h1 class="blog-title" th:text="${blog.getTitle()}">Blog Title</h1>
+    <p class="blog-meta">
+        <span th:text="${blog.getAuthor()}">Author</span> | <span th:text="${blog.getPublishedAt()}">Published Date</span>
+    </p>
+    <!-- Tags section -->
+    <div class="tags-section">
+        <p>Tags: <span th:each="tag, iterStat : ${blog.tags}">
+    <span th:text="${tag.name}" class="tag">Tag</span>
+    <span th:unless="${iterStat.last}"> | </span>
+</span></p>
+
+
+    </div>
+    <div class="blog-content" th:utext="${blog.getContent()}">
+        Blog content goes here.
+    </div>
+    <br><br>
+    <a th:href="@{/editBlog/{blogId}(blogId=${blog.id})}" class="top-button-edit-link">Edit</a>
+    <a th:href="@{/delete/{blogId}(blogId=${blog.id})}" class="top-button-delete-link">Delete</a>
+</div>
+
+<div class="comment-section">
+    <form th:action="@{/commentAdd}">
+        <input type="hidden" th:name="post_id" th:value="${blog.id}">
+        <p>Add a Comment:</p>
+        <label for="name">
+            <span>Name:</span><input type="text" id="name" name="name">
+        </label>
+        <label for="email">
+            <span>Email:</span><input type="text" id="email" name="email">
+        </label>
+        <label for="comment">
+            <span>Comment:</span>
+            <textarea id="comment" name="comment"></textarea>
+        </label>
+        <input type="submit" value="Add Comment">
+    </form>
+</div>
+
+<div class="comment">
+    <!-- Comments will be displayed here -->
+    <div th:each="comment : ${commentsList}" class="comment-box">
+        <p class="comment-name" th:text="${comment.name}">Commenter Name</p>
+        <p class="comment-email" th:text="${comment.email}">comment@example.com</p>
+        <p class="comment-content" th:text="${comment.comment}">This is a comment text.</p>
+<!--        <a th:href="@{/deleteComment}" class="deleteComment">Delete</a>-->
+        <a th:href="@{'/deleteComment/' + ${comment.getId()} + '/' + ${comment.getPost_id()}}" class="deleteComment">Delete</a>
+
+    </div>
+</div>
+
+</body>
+</html>
