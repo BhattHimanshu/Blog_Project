@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Set;
+
 
 @Controller
 public class Controller3 {
@@ -23,15 +23,10 @@ public class Controller3 {
 
     @RequestMapping("/search")
     public String searchByString(@RequestParam("search") String search, Model model) {
-        Set<Integer> postIds = ps.findPostIdsByTagName(search);
-        List<PostEntity> posts = ps.getBySearchString(search, postIds);
-        List<TagEntity> tags = ts.findAll();
-        List<PostEntity> postEntityList=ps.getAllPost();
-        List<String> authors = ps.findAllAuthors(postEntityList); // returning list of string of all authors
 
+        List<PostEntity> posts = ps.getBySearchString(search);
         model.addAttribute("blogs", posts);
-        model.addAttribute("users", authors);
-        model.addAttribute("tags", tags);
+
         return "search-page";
     }
 }

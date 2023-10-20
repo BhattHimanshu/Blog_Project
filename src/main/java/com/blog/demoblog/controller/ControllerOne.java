@@ -9,6 +9,9 @@ import com.blog.demoblog.service.CommentService;
 import com.blog.demoblog.service.PostService;
 import com.blog.demoblog.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +31,16 @@ public class ControllerOne {
     @Autowired
     TagRepository tagrepo;
 
+
     @GetMapping("/")
-    public String viewBlogs(Model model) {
-        List<PostEntity> list = ps.getAllPost();
-        model.addAttribute("blogs", list);
+    public String viewBlogs(Model model, @PageableDefault(size = 5) Pageable pageable) {
+        Page<PostEntity> page = ps.getAllPost(pageable);
+        model.addAttribute("blogs", page.getContent());
+        model.addAttribute("currentPage", page.getNumber());
+        model.addAttribute("totalPages", page.getTotalPages());
         return "viewBlog";
     }
+
 
     @RequestMapping("/addBlog")
     public String publishPost(@ModelAttribute("blogPost") PostEntity post,@RequestParam("tagsHtml") String tagFromHtml) {
