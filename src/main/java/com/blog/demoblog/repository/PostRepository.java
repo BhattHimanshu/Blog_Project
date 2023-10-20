@@ -22,4 +22,11 @@ public interface PostRepository extends JpaRepository<PostEntity,Integer> {
             "EXISTS (SELECT t FROM p.tags t WHERE LOWER(t.name) LIKE LOWER(CONCAT('%', :search, '%')))")
     List<PostEntity> getBySearchString(@Param("search") String search);
 
+    @Query("SELECT p FROM PostEntity p WHERE " +
+            "LOWER(p.title) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            "LOWER(p.content) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            "LOWER(p.author) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            "EXISTS (SELECT t FROM p.tags t WHERE LOWER(t.name) LIKE LOWER(CONCAT('%', :search, '%')))")
+    Page<PostEntity> getBySearchString(@Param("search") String search, Pageable pageable);
+
 }

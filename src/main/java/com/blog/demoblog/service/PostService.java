@@ -38,6 +38,9 @@ public class PostService {
     public List<PostEntity> getBySearchString(String searchString) {
         return postRepository.getBySearchString(searchString);
     }
+    public Page<PostEntity> searchByString(String search, Pageable pageable) {
+        return postRepository.getBySearchString(search, pageable);
+    }
 
     public Page<PostEntity> getPostsSortedByField(Pageable pageable, String sort) {
         if ("desc".equals(sort)) {

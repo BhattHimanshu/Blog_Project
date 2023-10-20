@@ -27,13 +27,16 @@ public class Controller3 {
     TagService ts;
 
     @RequestMapping("/search")
-    public String searchByString(@RequestParam("search") String search, Model model) {
-
-        List<PostEntity> posts = ps.getBySearchString(search);
-        model.addAttribute("blogs", posts);
-
+    public String searchByString(@RequestParam(value = "search", required = false) String search, @PageableDefault(size = 5) Pageable pageable, Model model) {
+        Page<PostEntity> page = ps.searchByString(search, pageable);
+        model.addAttribute("blogs", page.getContent());
+        model.addAttribute("currentPage", page.getNumber());
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("search", search); // Pass the search parameter to the view
         return "search-page";
     }
+
+
     @RequestMapping("/sort")
     public String viewBlogsSorted(Model model, @PageableDefault(size = 5) Pageable pageable, @RequestParam("sort") String sort) {
         Page<PostEntity> page = ps.getPostsSortedByField(pageable, sort);
