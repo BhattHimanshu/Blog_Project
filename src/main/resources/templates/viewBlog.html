@@ -98,7 +98,7 @@
     <form th:action="@{/search}" style="display: inline; margin-right: 10px;">
       <input type="text" name="search"  placeholder="Search"> <span><input type="submit" value="search"></span>
     </form>
-    <a href="#" class="login-link">Login</a>
+    <a th:href="@{/login}" class="login-link">Login</a>
     <div class="dropdown">
       <select >
         <option value="">Filter </option>
