@@ -5,7 +5,9 @@ import com.blog.demoblog.repository.PostRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,8 +25,8 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public Page<PostEntity> getAllPost(Pageable pageable) {
-        return postRepository.findAll(pageable);
+    public List<PostEntity> getAllPost() {
+        return postRepository.findAll();
     }
 
     public PostEntity getPostById(Integer id){
@@ -42,14 +44,49 @@ public class PostService {
         return postRepository.getBySearchString(search, pageable);
     }
 
-    public Page<PostEntity> getPostsSortedByField(Pageable pageable, String sort) {
-        if ("desc".equals(sort)) {
-            return postRepository.findAllByOrderByPublishedAtDesc(pageable);
-        } else if ("asc".equals(sort)) {
-            return postRepository.findAllByOrderByPublishedAtAsc(pageable);
+
+    public Page<PostEntity> findPostsWithSortingASC(int page, int pageSize, String field, String sort){
+        Sort sortObject = Sort.by(sort.equalsIgnoreCase("asc") ? Sort.Order.asc(field) : Sort.Order.desc(field));
+        PageRequest pageRequest = PageRequest.of(page, pageSize, sortObject);
+
+        // Retrieve the paginated and sorted data from the repository
+        return postRepository.findAll(pageRequest);
+    }
+    public Page<PostEntity> findPostsWithSortingDSC(int page, int pageSize, String field, String sort){
+        Sort sortObject = Sort.by(sort.equalsIgnoreCase("asc") ? Sort.Order.asc(field) : Sort.Order.desc(field));
+        PageRequest pageRequest = PageRequest.of(page, pageSize, sortObject);
+
+        // Retrieve the paginated and sorted data from the repository
+        return postRepository.findAll(pageRequest);
+    }
+
+    public Page<PostEntity> findAllWithPagination(int offset ,int pageSize){
+        return postRepository.findAll(PageRequest.of(offset,pageSize));
+    }
+
+    public Page<PostEntity> findAllWithPaginationAndSorting(int page, int pageSize, String sortingField, String sort) {
+        // Create a Sort object based on the sortingField and sort direction
+        Sort sortObject = Sort.by(sort.equalsIgnoreCase("asc") ? Sort.Order.asc(sortingField) : Sort.Order.desc(sortingField));
+
+        // Create a PageRequest object for pagination and sorting
+        PageRequest pageRequest = PageRequest.of(page, pageSize, sortObject);
+
+        // Retrieve the paginated and sorted data from the repository
+        return postRepository.findAll(pageRequest);
+    }
+
+    public List<PostEntity> filterPosts(List<String> selectedAuthors, List<Integer> selectedTags) {
+        if (selectedAuthors == null && selectedTags == null) {
+            return postRepository.findAll();
+        } else if (selectedAuthors != null && selectedTags == null) {
+            return postRepository.findByAuthorIn(selectedAuthors);
+        } else if (selectedAuthors == null && selectedTags != null) {
+            return postRepository.findByTagsIdIn(selectedTags);
         } else {
-            throw new IllegalArgumentException("Invalid sort direction: " + sort);
+            return postRepository.findByAuthorInAndTagsIdIn(selectedAuthors, selectedTags);
         }
     }
+
+
 }
 

@@ -96,29 +96,24 @@
   <h1>MY BLOG APPLICATION</h1>
   <div class="search-bar">
     <form th:action="@{/search}" style="display: inline; margin-right: 10px;">
-      <input type="text" name="search"  placeholder="Search"> <span><input type="submit" value="search"></span>
+      <input type="text" id="search" name="search"  placeholder="Search"> <span><input type="submit" value="search"></span>
     </form>
     <a th:href="@{/login}" class="login-link">Login</a>
     <div class="dropdown">
-      <select >
-        <option value="">Filter </option>
-        <option value="">Filter </option>
-        <option value="">Filter </option>
-        <option value="">Filter </option>
-
-      </select>
+    <form th:action="@{/filter}"><input type="submit" value="filter"></form>
     </div>
-   <form class="sortForm" th:action="@{/sort}">
-     <div class="dropdown">
-       <select name="sort">
-         <option value="desc">Most Recent</option>
-         <option value="asc">Oldest First</option>
-       </select>
-       <input type="submit" value="Sort">
-     </div>
+    <div class="sortForm">
+      <form th:action="@{/sort}">
+        <div class="dropdown">
+          <select name="sort">
+            <option value="asc" th:selected="${sort == 'asc'}">Sort Ascending</option>
+            <option value="desc" th:selected="${sort == 'desc'}">Sort Descending</option>
+          </select>
+          <input type="submit" value="Sort">
+        </div>
+      </form>
+    </div>
 
-
-   </form>
 
   </div>
 
@@ -131,21 +126,20 @@
     <span th:unless="${iterStat.last}"> | </span>
 </span></p>
     <p th:text="${blog.excerpt}">Excerpt</p>
-    <!-- You can add more content or a "Read More" link here -->
     </a>
   </div>
+
   <div class="pagination">
     <ul>
-      <li th:if="${currentPage > 0}" class="pagination-item"><a th:href="@{/(page=0)}">First</a></li>
-      <li th:if="${currentPage > 0}" class="pagination-item"><a th:href="@{/(page=${currentPage - 1})}">Previous</a></li>
-      <li th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}" th:class="${pageNumber == currentPage} ? 'pagination-item active' : 'pagination-item'">
-        <a th:if="${pageNumber != currentPage}" th:href="@{/(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
-        <span th:if="${pageNumber == currentPage}" th:text="${pageNumber + 1}"></span>
+      <li th:each="pageNumber : ${#numbers.sequence(0, blogs.totalPages - 1)}" th:class="${pageNumber == blogs.number} ? 'pagination-item active' : 'pagination-item'">
+        <a th:href="@{|/?page=${pageNumber}&sort=${sort}|}" th:text="${pageNumber + 1}"></a>
       </li>
-      <li th:if="${currentPage < totalPages - 1}" class="pagination-item"><a th:href="@{/(page=${currentPage + 1})}">Next</a></li>
-      <li th:if="${currentPage < totalPages - 1}" class="pagination-item"><a th:href="@{/(page=${totalPages - 1})}">Last</a></li>
     </ul>
   </div>
+
+
+
+
 
 </div>
 

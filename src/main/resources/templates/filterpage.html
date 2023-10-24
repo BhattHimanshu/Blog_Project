@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Filter</title>
+</head>
+<body>
+<form th:action="@{/filter}" method="post">
+    <div th:each="postEn : ${posts}">
+        <label>
+            <input type="checkbox" name="selectedAuthors" th:value="${postEn}">
+            <span th:text="${postEn}"></span>
+        </label><br>
+    </div>
+
+    <h1>Tags</h1>
+
+    <div th:each="tag : ${tags}">
+        <label>
+            <input type="checkbox" name="selectedTags" th:value="${tag.getId()}">
+            <span th:text="${tag.getName()}"></span>
+        </label><br>
+    </div>
+    <input type="submit" value="Apply Filters">
+</form>
+
+
+
+</body>
+</html>

@@ -32,14 +32,34 @@ public class ControllerOne {
     TagRepository tagrepo;
 
 
+//    @GetMapping("/")
+//    public String viewBlogs(Model model) {
+//        List<PostEntity> blogs = ps.getAllPost();
+//        model.addAttribute("blogs", blogs);
+//
+//        return "viewBlog";
+//    }
+
     @GetMapping("/")
-    public String viewBlogs(Model model, @PageableDefault(size = 5) Pageable pageable) {
-        Page<PostEntity> page = ps.getAllPost(pageable);
-        model.addAttribute("blogs", page.getContent());
-        model.addAttribute("currentPage", page.getNumber());
-        model.addAttribute("totalPages", page.getTotalPages());
+    public String viewBlogWithPagination(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "sort", defaultValue = "asc") String sort,
+            Model model) {
+        int pageSize = 10;
+
+        // Determine the sorting field based on the sort parameter
+        String sortingField = "publishedAt";
+
+        if (sort.equals("desc")) {
+            sortingField = "publishedAt"; // Change this to the desired sorting field
+        }
+
+        Page<PostEntity> blogs = ps.findAllWithPaginationAndSorting(page, pageSize, sortingField, sort);
+        model.addAttribute("blogs", blogs);
+        model.addAttribute("sort", sort); // Pass the sorting direction to the template
         return "viewBlog";
     }
+
 
 
     @RequestMapping("/addBlog")
