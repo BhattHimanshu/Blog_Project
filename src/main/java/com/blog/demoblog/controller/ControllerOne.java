@@ -1,10 +1,9 @@
 package com.blog.demoblog.controller;
 
-import com.blog.demoblog.Entity.CommentEntity;
-import com.blog.demoblog.Entity.PostEntity;
-import com.blog.demoblog.Entity.Post_Tag;
-import com.blog.demoblog.Entity.TagEntity;
+import com.blog.demoblog.Entity.*;
+import com.blog.demoblog.repository.PostRepository;
 import com.blog.demoblog.repository.TagRepository;
+import com.blog.demoblog.repository.UserRepository;
 import com.blog.demoblog.service.CommentService;
 import com.blog.demoblog.service.PostService;
 import com.blog.demoblog.service.TagService;
@@ -12,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,11 @@ public class ControllerOne {
     @Autowired
     TagRepository tagrepo;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    PostRepository postRepository;
 
 //    @GetMapping("/")
 //    public String viewBlogs(Model model) {
@@ -45,6 +51,7 @@ public class ControllerOne {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "sort", defaultValue = "asc") String sort,
             Model model) {
+
         int pageSize = 10;
 
         // Determine the sorting field based on the sort parameter
@@ -89,12 +96,30 @@ public class ControllerOne {
     }
 
 
-
     @RequestMapping("/blogLink/{blogId}")
-    public String update(@PathVariable Long blogId, Model model , Model m2) {
-        Integer intBlogId = blogId.intValue();
+    public String update(@PathVariable long blogId, Model model , Model m2) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User author = userRepository.findByName(username);
+
+        String author1 = postRepository.findById((int)blogId).get().getAuthor();
+
+        System.out.println("Logged in user: " + username + " -> author: " + author1);
+
+        model.addAttribute("logged_in_user",username);
+        model.addAttribute("post_author",author1);
+
+        model.addAttribute("authorName", author);
+
+//        System.out.println("Logged in user: " + username + " -> author" + author.getEmail());
+
+        Integer intBlogId = Integer.parseInt(""+blogId);
         PostEntity postEntity = ps.getPostById(intBlogId);
         model.addAttribute("blog", postEntity);
+
+
 
         List<CommentEntity> list1 = cs.getAllComment();
         List<CommentEntity> list2 = new ArrayList<>();

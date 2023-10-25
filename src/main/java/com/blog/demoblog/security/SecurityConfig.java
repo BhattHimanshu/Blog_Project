@@ -20,7 +20,8 @@ public class SecurityConfig  {
 
         http.authorizeHttpRequests(
                 configurer -> configurer
-                        .requestMatchers(HttpMethod.GET,"/").permitAll()
+//                        .requestMatchers(HttpMethod.GET,"/").permitAll()
+                        .requestMatchers("/").permitAll()
                         .requestMatchers(HttpMethod.GET,"/sort").permitAll()
                         .requestMatchers(HttpMethod.GET,"/filter").permitAll()
                         .requestMatchers(HttpMethod.GET,"/search").permitAll()
@@ -36,7 +37,7 @@ public class SecurityConfig  {
                 .loginPage("/login")
                 .loginProcessingUrl("/authenticateTheUser")
                 .permitAll()
-                .defaultSuccessUrl("/")
+//                .defaultSuccessUrl("/")
         );
 
 //        http.httpBasic(Customizer.withDefaults());

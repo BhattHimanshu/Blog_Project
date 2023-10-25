@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      lang="en">
 <head>
   <meta charset="UTF-8">
   <title>My Blog Application</title>
@@ -91,9 +93,17 @@
 </head>
 <body>
 <div class="container">
-  <a th:href="@{/newBlog}" class="create-blog-button">Create Blog</a>
+<!--  <span th:if="${userName != null}">-->
+<!--  <span th:sec="isAuthenticated()">-->
+  <span sec:authorize="isAuthenticated()" >
+    <a th:href="@{/newBlog}" class="create-blog-button">Create Blog</a>
+  </span>
+<!--  </span>-->
 
+<!--</span>-->
   <h1>MY BLOG APPLICATION</h1>
+
+
   <div class="search-bar">
     <form th:action="@{/search}" style="display: inline; margin-right: 10px;">
       <input type="text" id="search" name="search"  placeholder="Search"> <span><input type="submit" value="search"></span>

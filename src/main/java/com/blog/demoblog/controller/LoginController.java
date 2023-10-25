@@ -30,7 +30,7 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public void afterRegister(@RequestParam("name") String name , @RequestParam("email") String email ,@RequestParam("password") String password){
+    public String afterRegister(@RequestParam("name") String name , @RequestParam("email") String email ,@RequestParam("password") String password){
         User user=new User();
         user.setEmail(email);
         user.setName(name);
@@ -38,6 +38,6 @@ public class LoginController {
         user.setRoles("AUTHOR");
 
         userRepository.save(user);
-
+        return "redirect:/";
     }
 }

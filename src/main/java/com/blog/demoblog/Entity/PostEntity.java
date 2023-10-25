@@ -53,6 +53,7 @@ public class PostEntity {
             inverseJoinColumns = {@JoinColumn(name = "tagId")})
     private Set<TagEntity> tags = new HashSet<>();
 
+    private String email;
     public Long getId() {
         return id;
     }

@@ -140,8 +140,11 @@
         Blog content goes here.
     </div>
     <br><br>
-    <a th:href="@{/editBlog/{blogId}(blogId=${blog.id})}" class="top-button-edit-link">Edit</a>
-    <a th:href="@{/delete/{blogId}(blogId=${blog.id})}" class="top-button-delete-link">Delete</a>
+
+    <div th:if="${logged_in_user == post_author}">
+        <a th:href="@{/editBlog/{blogId}(blogId=${blog.id})}" class="top-button-edit-link">Edit</a>
+        <a th:href="@{/delete/{blogId}(blogId=${blog.id})}" class="top-button-delete-link">Delete</a>
+    </div>
 </div>
 
 <div class="comment-section">
