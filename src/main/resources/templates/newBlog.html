@@ -1,5 +1,8 @@
     <!DOCTYPE html>
-    <html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <html xmlns:th="http://www.thymeleaf.org" lang="en"
+          xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+
+    >
     <head>
         <meta charset="UTF-8">
         <title>Create Blog</title>
@@ -92,6 +95,14 @@
             <input type="submit" value="Publish" />
 
         </form>
+    </div>
+
+    <div class="logout-container">
+   <span sec:authorize="isAuthenticated()" >
+    <form th:action="@{/logout}" method="post">
+      <input type="submit" value="Logout" class="logout-button" />
+    </form>
+  </span>
     </div>
     </body>
     </html>

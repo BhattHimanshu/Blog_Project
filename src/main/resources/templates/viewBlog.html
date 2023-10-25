@@ -101,8 +101,10 @@
 <!--  </span>-->
 
 <!--</span>-->
-  <h1>MY BLOG APPLICATION</h1>
-
+  <h1>MY BLOG APPLICATION </h1>
+  <span sec:authorize="isAuthenticated()" >
+  <h2>Welcome <span th:text="${UsernameLogged}"></span></h2>
+  </span>
 
   <div class="search-bar">
     <form th:action="@{/search}" style="display: inline; margin-right: 10px;">
@@ -124,7 +126,13 @@
       </form>
     </div>
 
-
+    <div class="logout-container">
+   <span sec:authorize="isAuthenticated()" >
+    <form th:action="@{/logout}" method="post">
+      <input type="submit" value="Logout" class="logout-button" />
+    </form>
+  </span>
+    </div>
   </div>
 
   <!-- Iterate through the list of blogs and display them in boxes -->

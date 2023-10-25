@@ -44,6 +44,18 @@ public class PostEntity {
     @Column(name = "updated_at" )
     private java.util.Date updatedAt;
 
+    public void setTags(Set<TagEntity> tags) {
+        this.tags = tags;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST,
                     CascadeType.DETACH, CascadeType.MERGE,

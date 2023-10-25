@@ -52,6 +52,11 @@ public class ControllerOne {
             @RequestParam(name = "sort", defaultValue = "asc") String sort,
             Model model) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User author = userRepository.findByName(username);
+        model.addAttribute("UsernameLogged",username);
         int pageSize = 10;
 
         // Determine the sorting field based on the sort parameter
@@ -71,9 +76,14 @@ public class ControllerOne {
 
     @RequestMapping("/addBlog")
     public String publishPost(@ModelAttribute("blogPost") PostEntity post,@RequestParam("tagsHtml") String tagFromHtml) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
         List<TagEntity> tags = ts.findTagIds(tagFromHtml);
         post.setTags(new HashSet<>(tags));
+        post.setEmail(username);
         ps.addPost(post);
+
         return "redirect:/";
     }
 
@@ -104,21 +114,23 @@ public class ControllerOne {
 
         User author = userRepository.findByName(username);
 
+        Integer intBlogId = Integer.parseInt(""+blogId);
+        PostEntity postEntity = ps.getPostById(intBlogId);
+        model.addAttribute("blog", postEntity);
+
+        String postEmail = postEntity.getEmail();
+
         String author1 = postRepository.findById((int)blogId).get().getAuthor();
 
         System.out.println("Logged in user: " + username + " -> author: " + author1);
 
-        model.addAttribute("logged_in_user",username);
+        model.addAttribute("postEmail",postEmail); /////////////////
+        model.addAttribute("logged_in_user",username);/////////////
         model.addAttribute("post_author",author1);
 
         model.addAttribute("authorName", author);
 
 //        System.out.println("Logged in user: " + username + " -> author" + author.getEmail());
-
-        Integer intBlogId = Integer.parseInt(""+blogId);
-        PostEntity postEntity = ps.getPostById(intBlogId);
-        model.addAttribute("blog", postEntity);
-
 
 
         List<CommentEntity> list1 = cs.getAllComment();

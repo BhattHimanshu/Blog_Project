@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+>
 <head>
     <meta charset="UTF-8">
     <title>Read Blog</title>
@@ -141,7 +143,7 @@
     </div>
     <br><br>
 
-    <div th:if="${logged_in_user == post_author}">
+    <div th:if="${logged_in_user == postEmail}">
         <a th:href="@{/editBlog/{blogId}(blogId=${blog.id})}" class="top-button-edit-link">Edit</a>
         <a th:href="@{/delete/{blogId}(blogId=${blog.id})}" class="top-button-delete-link">Delete</a>
     </div>
@@ -177,5 +179,12 @@
     </div>
 </div>
 
+<div class="logout-container">
+   <span sec:authorize="isAuthenticated()" >
+    <form th:action="@{/logout}" method="post">
+      <input type="submit" value="Logout" class="logout-button" />
+    </form>
+  </span>
+</div>
 </body>
 </html>
