@@ -67,27 +67,40 @@
       padding: 0;
     }
 
-    .pagination-item {
-      display: inline-block;
-      margin: 0 5px;
-      padding: 5px 10px;
-      border: 1px solid #000;
-      border-radius: 5px;
-      text-align: center;
-      text-decoration: none;
-      color: #000;
-    }
-
-    .pagination-item.active {
-      background-color: #000;
-      color: #fff;
-      font-weight: bold;
-    }
-
     .pagination-item a {
       text-decoration: none;
       color: #000;
     }
+    .myblog{
+      text-decoration: none;
+      color: black;
+    }
+    /* Adjust the styles for the search bar container */
+    .search-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Adjust the styles for the search container */
+    .search-container {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Add any necessary margin or padding for spacing */
+    .login-link,
+    .action-buttons {
+      margin-left: 10px;
+    }
+
+    /* Add styles for Sort and Filter dropdowns as needed */
+    .sortForm,
+    .logout-container {
+      /* Adjust the styles as needed */
+    }
+
+
 
   </style>
 </head>
@@ -101,39 +114,41 @@
 <!--  </span>-->
 
 <!--</span>-->
-  <h1>MY BLOG APPLICATION </h1>
+  <a  class="myblog" th:href="@{/}"> <h1>MY BLOG APPLICATION </h1> </a>
   <span sec:authorize="isAuthenticated()" >
   <h2>Welcome <span th:text="${UsernameLogged}"></span></h2>
   </span>
 
   <div class="search-bar">
-    <form th:action="@{/search}" style="display: inline; margin-right: 10px;">
-      <input type="text" id="search" name="search"  placeholder="Search"> <span><input type="submit" value="search"></span>
-    </form>
-    <a th:href="@{/login}" class="login-link">Login</a>
-    <div class="dropdown">
-    <form th:action="@{/filter}"><input type="submit" value="filter"></form>
+    <div class="search-container">
+      <form th:action="@{/search}">
+        <input type="text" id="search" name="search" placeholder="Search">
+        <input type="submit" value="search">
+      </form>
     </div>
-    <div class="sortForm">
-      <form th:action="@{/sort}">
-        <div class="dropdown">
+    <a th:href="@{/login}" class="login-link">Login</a>
+    <div class="action-buttons">
+      <form th:action="@{/filter}">
+        <input type="submit" value="Filter">
+      </form>
+    </div>
+      <div class="sortForm">
+        <form th:action="@{/sort}">
           <select name="sort">
             <option value="asc" th:selected="${sort == 'asc'}">Sort Ascending</option>
             <option value="desc" th:selected="${sort == 'desc'}">Sort Descending</option>
           </select>
           <input type="submit" value="Sort">
-        </div>
-      </form>
+        </form>
+      </div>
+      <div class="logout-container">
+            <span sec:authorize="isAuthenticated()">
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" value="Logout" class="logout-button" />
+                </form>
+            </span>
+      </div>
     </div>
-
-    <div class="logout-container">
-   <span sec:authorize="isAuthenticated()" >
-    <form th:action="@{/logout}" method="post">
-      <input type="submit" value="Logout" class="logout-button" />
-    </form>
-  </span>
-    </div>
-  </div>
 
   <!-- Iterate through the list of blogs and display them in boxes -->
   <div th:each="blog : ${blogs}" class="blog-box">
@@ -154,12 +169,6 @@
       </li>
     </ul>
   </div>
-
-
-
-
-
 </div>
-
 </body>
 </html>

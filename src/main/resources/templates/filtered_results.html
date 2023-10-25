@@ -87,11 +87,15 @@
         text-decoration: none;
         color: #000;
     }
+    .myblog{
+        text-decoration: none;
+        color: black;
+    }
 </style>
 </head>
 <body>
 <div class="container">
-    <h1>Filtered Results</h1>
+    <a  class="myblog" th:href="@{/}"> <h1>MY BLOG APPLICATION </h1> </a>
 
     <!-- Display the filtered posts -->
     <div th:each="blog : ${blogs}" class="blog-box">

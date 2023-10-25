@@ -69,6 +69,24 @@
                 background-color: #ddd;
                 color: #333;
             }
+            /* Add this CSS code to your existing style section */
+            .bottom-container {
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                text-align: center;
+                width: 100%;
+            }
+
+            .logout-container {
+                /* Add your styles for the logout container here */
+            }
+
+            .logout-button {
+                /* Add your styles for the logout button here */
+            }
+
         </style>
     </head>
     <body>
@@ -97,12 +115,15 @@
         </form>
     </div>
 
-    <div class="logout-container">
-   <span sec:authorize="isAuthenticated()" >
-    <form th:action="@{/logout}" method="post">
-      <input type="submit" value="Logout" class="logout-button" />
-    </form>
-  </span>
+
+    <div class="bottom-container">
+        <div class="logout-container">
+            <span sec:authorize="isAuthenticated()">
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" value="Logout" class="logout-button" />
+                </form>
+            </span>
+        </div>
     </div>
     </body>
     </html>

@@ -4,9 +4,16 @@
     <meta charset="UTF-8">
     <title>Filter T</title>
 </head>
+<style>
+    .myblog{
+        text-decoration: none;
+        color: black;
+    }
+</style>
 <body>
 <div class="container">
-    <h1>Filter Posts</h1>
+
+    <a  class="myblog" th:href="@{/}"> <h1>MY BLOG APPLICATION </h1> </a>
     <form th:action="@{/filterData}" method="post">
         <h2>Select Authors</h2>
         <div th:each="author : ${authors}">

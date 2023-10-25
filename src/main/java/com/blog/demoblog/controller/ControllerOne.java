@@ -120,18 +120,10 @@ public class ControllerOne {
 
         String postEmail = postEntity.getEmail();
 
-        String author1 = postRepository.findById((int)blogId).get().getAuthor();
-
-        System.out.println("Logged in user: " + username + " -> author: " + author1);
 
         model.addAttribute("postEmail",postEmail); /////////////////
         model.addAttribute("logged_in_user",username);/////////////
-        model.addAttribute("post_author",author1);
-
         model.addAttribute("authorName", author);
-
-//        System.out.println("Logged in user: " + username + " -> author" + author.getEmail());
-
 
         List<CommentEntity> list1 = cs.getAllComment();
         List<CommentEntity> list2 = new ArrayList<>();

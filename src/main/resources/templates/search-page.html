@@ -86,30 +86,21 @@
       text-decoration: none;
       color: #000;
     }
+    .myblog{
+      text-decoration: none;
+      color: black;
+    }
   </style>
 </head>
 <body>
 <div class="container">
   <a th:href="@{/newBlog}" class="create-blog-button">Create Blog</a>
 
-  <h1>MY BLOG APPLICATION</h1>
+  <a  class="myblog" th:href="@{/}"> <h1>MY BLOG APPLICATION </h1> </a>
   <div class="search-bar">
     <form action="search" style="display: inline; margin-right: 10px;">
       <input type="text" name="search"  placeholder="Search"> <span><input type="submit" value="search"></span>
     </form>
-    <a href="#" class="login-link">Login</a>
-    <div class="dropdown">
-      <select>
-        <option value="">Filter by Author</option>
-        <!-- Add dynamically generated options from database authors here -->
-      </select>
-    </div>
-    <div class="dropdown">
-      <select>
-        <option value="">Sort by Author</option>
-        <!-- Add dynamically generated options from database authors here -->
-      </select>
-    </div>
   </div>
 
   <!-- Iterate through the list of blogs and display them in boxes -->

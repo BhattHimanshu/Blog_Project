@@ -174,8 +174,9 @@
         <p class="comment-email" th:text="${comment.email}">comment@example.com</p>
         <p class="comment-content" th:text="${comment.comment}">This is a comment text.</p>
 <!--        <a th:href="@{/deleteComment}" class="deleteComment">Delete</a>-->
+        <div th:if="${logged_in_user == postEmail}">
         <a th:href="@{'/deleteComment/' + ${comment.getId()} + '/' + ${comment.getPost_id()}}" class="deleteComment">Delete</a>
-
+        </div>
     </div>
 </div>
 

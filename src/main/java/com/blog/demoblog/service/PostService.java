@@ -48,7 +48,6 @@ public class PostService {
     public Page<PostEntity> findPostsWithSortingASC(int page, int pageSize, String field, String sort){
         Sort sortObject = Sort.by(sort.equalsIgnoreCase("asc") ? Sort.Order.asc(field) : Sort.Order.desc(field));
         PageRequest pageRequest = PageRequest.of(page, pageSize, sortObject);
-
         // Retrieve the paginated and sorted data from the repository
         return postRepository.findAll(pageRequest);
     }
